@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: project-service
+    runtime: docker
+    plan: free
+    region: oregon
+    buildCommand: docker build -t project-service .
+    startCommand: docker run -p 10000:8080 -e DB_CONNECTION_STRING=$DB_CONNECTION_STRING -e PORT=10000 project-service
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: DB_CONNECTION_STRING
+        fromDatabase:
+          name: project-db
+          property: connectionString
+    databases:
+      - name: project-db
+        plan: free
+        databaseName: project_service
+        user: render_user

@@ -29,6 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapProjectsEndpoints();
 
-app.UseHttpsRedirection();
+var port = builder.Configuration["PORT"] ?? "8080";
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.Run();
