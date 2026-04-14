@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 using ProjectService.Data;
 using ProjectService.Data.Repositories;
 using ProjectService.Domain.Interfaces;
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddOpenApi();
+
+// Add Swagger
+builder.Services.AddSwaggerGen();
 
 // Add DbContext
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
@@ -28,6 +32,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project Service API v1"));
 }
 
 app.MapProjectsEndpoints();
