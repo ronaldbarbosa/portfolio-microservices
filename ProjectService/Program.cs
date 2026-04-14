@@ -11,7 +11,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 // Add Swagger
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Project Service API",
+        Version = "v1"
+    });
+    
+    c.CustomSchemaIds(type =>
+    {
+        if (type.Name == "Request")
+        {
+            var declaringType = type.DeclaringType?.Name;
+            return declaringType + "Request";
+        }
+        return type.Name;
+    });
+});
 
 // Add DbContext
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
