@@ -21,12 +21,9 @@ builder.Services.AddSwaggerGen(c =>
     
     c.CustomSchemaIds(type =>
     {
-        if (type.Name == "Request")
-        {
-            var declaringType = type.DeclaringType?.Name;
-            return declaringType + "Request";
-        }
-        return type.Name;
+        if (type.Name != "Request") return type.Name;
+        var declaringType = type.DeclaringType?.Name;
+        return declaringType + "Request";
     });
 });
 
@@ -54,8 +51,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapProjectsEndpoints();
-
-var port = builder.Configuration["PORT"] ?? "8080";
-app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.Run();
