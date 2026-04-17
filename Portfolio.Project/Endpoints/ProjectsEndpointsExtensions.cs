@@ -1,7 +1,7 @@
-using ProjectService.Endpoints.Dtos;
+using Portfolio.Project.Endpoints.Dtos;
 using SharedPagination;
 
-namespace ProjectService.Endpoints;
+namespace Portfolio.Project.Endpoints;
 
 public static class ProjectsEndpointsExtensions
 {

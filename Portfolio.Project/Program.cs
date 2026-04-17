@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
-using ProjectService.Data;
-using ProjectService.Data.Repositories;
-using ProjectService.Domain.Interfaces;
-using ProjectService.Endpoints;
+using Portfolio.Project.Data;
+using Portfolio.Project.Data.Repositories;
+using Portfolio.Project.Domain.Interfaces;
+using Portfolio.Project.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 

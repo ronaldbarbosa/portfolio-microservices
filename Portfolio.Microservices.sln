@@ -4,7 +4,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DEF60C34-1F2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{41CDF5C1-8592-42E9-A4CC-C239B97FFAE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectService", "ProjectService\ProjectService.csproj", "{75BDDCA5-4BC6-437F-A959-F648DA305E3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Project", "Portfolio.Project\Portfolio.Project.csproj", "{75BDDCA5-4BC6-437F-A959-F648DA305E3E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F245585F-DA2A-410E-B2FA-9C5C6135E685}"
 	ProjectSection(SolutionItems) = preProject

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectService.Data;
-using ProjectService.Endpoints.Dtos;
+using Portfolio.Project.Data;
+using Portfolio.Project.Endpoints.Dtos;
 
-namespace ProjectService.Endpoints;
+namespace Portfolio.Project.Endpoints;
 
 public static class UpdateProject
 {

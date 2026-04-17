@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectService.Data;
+using Portfolio.Project.Data;
 
-namespace ProjectService.Endpoints;
+namespace Portfolio.Project.Endpoints;
 
 public static class DeleteProject
 {

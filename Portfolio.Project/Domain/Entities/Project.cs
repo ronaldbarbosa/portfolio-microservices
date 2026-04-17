@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjectService.Domain.Entities;
+namespace Portfolio.Project.Domain.Entities;
 
 [Table("Projects")]
 public class Project

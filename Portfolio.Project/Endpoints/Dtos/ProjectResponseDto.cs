@@ -1,4 +1,4 @@
-namespace ProjectService.Endpoints.Dtos;
+namespace Portfolio.Project.Endpoints.Dtos;
 
 public record ProjectResponseDto(
     long Id,

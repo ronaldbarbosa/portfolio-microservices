@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using ProjectService.Domain.Entities;
+using Portfolio.Project.Domain.Entities;
 
-namespace ProjectService.Data;
+namespace Portfolio.Project.Data;
 
 public class ProjectServiceDbContext(DbContextOptions<ProjectServiceDbContext>  options) : DbContext(options)
 {
-    public DbSet<Project> Projects { get; set; }
+    public DbSet<Domain.Entities.Project> Projects { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

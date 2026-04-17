@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectService.Data;
-using ProjectService.Endpoints.Dtos;
+using Portfolio.Project.Data;
+using Portfolio.Project.Endpoints.Dtos;
+using Portfolio.Project.Domain.Entities;
 
-namespace ProjectService.Endpoints;
+namespace Portfolio.Project.Endpoints;
 
 public static class CreateProject
 {
