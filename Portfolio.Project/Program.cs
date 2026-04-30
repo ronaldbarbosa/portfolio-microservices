@@ -40,7 +40,15 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 // Add OpenAPI/Swagger
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ProjectServiceDbContext>();
+    await db.Database.MigrateAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -50,6 +58,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project Service API v1"));
 }
 
+app.MapHealthChecks("/health");
 app.MapProjectsEndpoints();
 
 app.Run();

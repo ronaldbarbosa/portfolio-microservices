@@ -1,23 +1,23 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ProjectService/ProjectService.csproj", "ProjectService/"]
-RUN dotnet restore "ProjectService/ProjectService.csproj"
+COPY ["Portfolio.Project/Portfolio.Project.csproj", "Portfolio.Project/"]
+COPY ["SharedPagination/SharedPagination.csproj", "SharedPagination/"]
+RUN dotnet restore "Portfolio.Project/Portfolio.Project.csproj"
 COPY . .
-WORKDIR "/src/ProjectService"
-RUN dotnet build "./ProjectService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Portfolio.Project"
+RUN dotnet build "./Portfolio.Project.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./ProjectService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Portfolio.Project.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ProjectService.dll"]
+ENTRYPOINT ["dotnet", "Portfolio.Project.dll"]
