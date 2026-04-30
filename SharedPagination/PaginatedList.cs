@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace SharedPagination;
 
-[Serializable]
 public class PaginatedList<T> : IPaginatedList where T : class
 {
     [JsonPropertyName("items")]
