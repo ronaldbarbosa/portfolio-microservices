@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Portfolio.Project.Data;
 using Portfolio.Project.Endpoints.Dtos;
 using SharedPagination;
@@ -11,8 +10,7 @@ public static class GetProjects
     {
         const int pageSize = 5;
 
-        var projects = await dbContext.Projects.ToListAsync();
-        var projectsDtos = projects.Select(p => new ProjectResponseDto(
+        var query = dbContext.Projects.Select(p => new ProjectResponseDto(
             p.Id,
             p.Name,
             p.Description,
@@ -22,16 +20,9 @@ public static class GetProjects
             p.Url,
             p.Code,
             p.Image,
-            p.Finished))
-            .ToList();
+            p.Finished));
 
-        var totalCount = projectsDtos.Count;
-        var items = projectsDtos
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-        
-        var paginatedList = new PaginatedList<ProjectResponseDto>(items, totalCount, page, pageSize);
+        var paginatedList = await PaginatedList<ProjectResponseDto>.CreateAsync(query, page, pageSize);
         return Results.Ok(paginatedList);
     }
 }

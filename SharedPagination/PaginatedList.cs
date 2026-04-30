@@ -44,10 +44,10 @@ public class PaginatedList<T> : IPaginatedList where T : class
         }
     }
 
-    public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageNumber)
+    public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
     {
         var totalItemCount = await source.CountAsync();
-        var items = await source.Skip((pageIndex - 1) * pageNumber).Take(pageNumber).ToListAsync();
-        return new PaginatedList<T>(items, totalItemCount, pageIndex, pageNumber);
+        var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        return new PaginatedList<T>(items, totalItemCount, pageNumber, pageSize);
     }
 }
