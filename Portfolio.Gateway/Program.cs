@@ -16,11 +16,14 @@ builder.Services
         options.RequireHttpsMetadata = keycloakConfig.GetValue<bool>("RequireHttpsMetadata");
 
         var validIssuers = keycloakConfig.GetSection("ValidIssuers").Get<string[]>() ?? [];
+        var validateAudience = keycloakConfig.GetValue<bool>("ValidateAudience");
+        var audience = keycloakConfig["Audience"];
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidateAudience = false,
+            ValidateAudience = validateAudience,
+            ValidAudiences = validateAudience && !string.IsNullOrEmpty(audience) ? [audience] : null,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuers = validIssuers.Length > 0 ? validIssuers : null

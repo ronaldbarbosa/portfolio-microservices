@@ -35,7 +35,7 @@ builder.Services.AddDbContext<ProjectServiceDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // Add Repositories
-builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 // Add OpenAPI/Swagger
 builder.Services.AddEndpointsApiExplorer();

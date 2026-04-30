@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Portfolio.Project.Data;
+using Portfolio.Project.Domain.Interfaces;
 using Portfolio.Project.Endpoints.Dtos;
 
 namespace Portfolio.Project.Endpoints;
@@ -17,9 +16,9 @@ public static class UpdateProject
         string Image,
         bool Finished);
 
-    public static async Task<IResult> Handle(long id, Request request, ProjectServiceDbContext dbContext)
+    public static async Task<IResult> Handle(long id, Request request, IProjectRepository repository)
     {
-        var project = await dbContext.Projects.FindAsync(id);
+        var project = await repository.FindByIdAsync(id);
 
         if (project is null)
             return Results.NotFound(new { message = "Project not found" });
@@ -34,20 +33,10 @@ public static class UpdateProject
         project.Image = request.Image;
         project.Finished = request.Finished;
 
-        await dbContext.SaveChangesAsync();
+        await repository.UpdateAsync(project);
 
-        var response = new ProjectResponseDto(
-            project.Id,
-            project.Name,
-            project.Description,
-            project.Frontend,
-            project.Backend,
-            project.Tools,
-            project.Url,
-            project.Code,
-            project.Image,
-            project.Finished);
-
-        return Results.Ok(response);
+        return Results.Ok(new ProjectResponseDto(
+            project.Id, project.Name, project.Description, project.Frontend, project.Backend,
+            project.Tools, project.Url, project.Code, project.Image, project.Finished));
     }
 }

@@ -1,42 +1,36 @@
 using Portfolio.Project.Domain.Interfaces;
-using Portfolio.Project.Domain.Entities;
+using SharedPagination;
 
 namespace Portfolio.Project.Data.Repositories;
 
 public class ProjectRepository(ProjectServiceDbContext context) : IProjectRepository
 {
-    private readonly ProjectServiceDbContext _context = context;
-    
-    public IQueryable<Domain.Entities.Project> GetAll()
+    public async Task<PaginatedList<Domain.Entities.Project>> GetAllAsync(int pageNumber, int pageSize)
     {
-        return _context.Projects.AsQueryable();
+        return await PaginatedList<Domain.Entities.Project>.CreateAsync(
+            context.Projects.AsQueryable(), pageNumber, pageSize);
     }
 
     public async Task<Domain.Entities.Project?> FindByIdAsync(long id)
     {
-        return await _context.Projects.FindAsync(id);
+        return await context.Projects.FindAsync(id);
     }
 
     public async Task SaveAsync(Domain.Entities.Project project)
     {
-        _context.Projects.Add(project);
-        await _context.SaveChangesAsync();
+        context.Projects.Add(project);
+        await context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Domain.Entities.Project project)
     {
-        _context.Projects.Update(project);
-        await _context.SaveChangesAsync();
+        context.Projects.Update(project);
+        await context.SaveChangesAsync();
     }
 
-    public async Task DeleteByIdAsync(long id)
+    public async Task DeleteAsync(Domain.Entities.Project project)
     {
-        var project = await _context.Projects.FindAsync(id);
-
-        if (project != null)
-        {
-            _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
-        }
+        context.Projects.Remove(project);
+        await context.SaveChangesAsync();
     }
 }

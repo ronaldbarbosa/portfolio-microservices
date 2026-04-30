@@ -1,30 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using Portfolio.Project.Data;
+using Portfolio.Project.Domain.Interfaces;
 using Portfolio.Project.Endpoints.Dtos;
 
 namespace Portfolio.Project.Endpoints;
 
 public static class GetProjectById
 {
-    public static async Task<IResult> Handle(long id, ProjectServiceDbContext dbContext)
+    public static async Task<IResult> Handle(long id, IProjectRepository repository)
     {
-        var project = await dbContext.Projects.FindAsync(id);
-        
+        var project = await repository.FindByIdAsync(id);
+
         if (project is null)
             return Results.NotFound(new { message = "Project not found" });
 
-        var response = new ProjectResponseDto(
-            project.Id,
-            project.Name,
-            project.Description,
-            project.Frontend,
-            project.Backend,
-            project.Tools,
-            project.Url,
-            project.Code,
-            project.Image,
-            project.Finished);
-
-        return Results.Ok(response);
+        return Results.Ok(new ProjectResponseDto(
+            project.Id, project.Name, project.Description, project.Frontend, project.Backend,
+            project.Tools, project.Url, project.Code, project.Image, project.Finished));
     }
 }

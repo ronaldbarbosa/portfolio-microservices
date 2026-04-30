@@ -1,7 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using Portfolio.Project.Data;
+using Portfolio.Project.Domain.Interfaces;
 using Portfolio.Project.Endpoints.Dtos;
-using Portfolio.Project.Domain.Entities;
 
 namespace Portfolio.Project.Endpoints;
 
@@ -18,7 +16,7 @@ public static class CreateProject
         string Image,
         bool Finished);
 
-    public static async Task<IResult> Handle(Request request, ProjectServiceDbContext dbContext)
+    public static async Task<IResult> Handle(Request request, IProjectRepository repository)
     {
         var project = new Domain.Entities.Project
         {
@@ -33,21 +31,10 @@ public static class CreateProject
             Finished = request.Finished
         };
 
-        dbContext.Projects.Add(project);
-        await dbContext.SaveChangesAsync();
+        await repository.SaveAsync(project);
 
-        var response = new ProjectResponseDto(
-            project.Id,
-            project.Name,
-            project.Description,
-            project.Frontend,
-            project.Backend,
-            project.Tools,
-            project.Url,
-            project.Code,
-            project.Image,
-            project.Finished);
-
-        return Results.Created($"/api/projects/{project.Id}", response);
+        return Results.Created($"/api/projects/{project.Id}", new ProjectResponseDto(
+            project.Id, project.Name, project.Description, project.Frontend, project.Backend,
+            project.Tools, project.Url, project.Code, project.Image, project.Finished));
     }
 }
