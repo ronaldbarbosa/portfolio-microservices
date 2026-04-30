@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Portfolio.Project.Domain.Interfaces;
 using Portfolio.Project.Endpoints.Dtos;
 
@@ -6,14 +7,14 @@ namespace Portfolio.Project.Endpoints;
 public static class UpdateProject
 {
     public record Request(
-        string Name,
-        string Description,
-        string Frontend,
-        string Backend,
-        string Tools,
-        string Url,
-        string Code,
-        string Image,
+        [property: Required] [property: MaxLength(100)]  string Name,
+        [property: Required] [property: MaxLength(1000)] string Description,
+        [property: Required]                             string Frontend,
+        [property: Required]                             string Backend,
+        [property: Required]                             string Tools,
+        [property: Required] [property: Url]             string Url,
+        [property: Required] [property: Url]             string Code,
+        [property: Required] [property: Url]             string Image,
         bool Finished);
 
     public static async Task<IResult> Handle(long id, Request request, IProjectRepository repository)

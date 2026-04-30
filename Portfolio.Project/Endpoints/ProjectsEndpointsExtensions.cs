@@ -20,12 +20,16 @@ public static class ProjectsEndpointsExtensions
 
         group.MapPost("", CreateProject.Handle)
             .WithName("CreateProject")
-            .Produces<ProjectResponseDto>(201);
+            .Produces<ProjectResponseDto>(201)
+            .Produces(400)
+            .WithValidation<CreateProject.Request>();
 
         group.MapPut("/{id:long}", UpdateProject.Handle)
             .WithName("UpdateProject")
             .Produces<ProjectResponseDto>()
-            .Produces(404);
+            .Produces(400)
+            .Produces(404)
+            .WithValidation<UpdateProject.Request>();
 
         group.MapDelete("/{id:long}", DeleteProject.Handle)
             .WithName("DeleteProject")
