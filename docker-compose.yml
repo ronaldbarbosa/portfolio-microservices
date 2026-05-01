@@ -10,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -24,14 +25,21 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HEALTH_ENABLED: "true"
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
     ports:
       - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/localhost/9000'"]
       interval: 15s
       timeout: 5s
       retries: 8
-      start_period: 30s
+      start_period: 60s
 
   portfolio-project:
     build:
@@ -54,7 +62,7 @@ services:
     container_name: portfolio-gateway
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      Authentication__KeyCloak__Authority: http://keycloak-service:8080/realms/Portfolio
+      Authentication__KeyCloak__Authority: http://keycloak-service:8080/realms/portfolio
       yarp__Clusters__projects__Destinations__portfolio__Address: http://portfolio-project:8080
     ports:
       - "5142:8080"
