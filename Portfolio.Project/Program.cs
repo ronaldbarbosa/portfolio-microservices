@@ -7,10 +7,6 @@ using Portfolio.Project.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddOpenApi();
-
-// Add Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -18,7 +14,7 @@ builder.Services.AddSwaggerGen(c =>
         Title = "Project Service API",
         Version = "v1"
     });
-    
+
     c.CustomSchemaIds(type =>
     {
         if (type.Name != "Request") return type.Name;
@@ -27,19 +23,14 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Add DbContext
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ProjectServiceDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Add Repositories
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-
-// Add OpenAPI/Swagger
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
@@ -50,13 +41,12 @@ using (var scope = app.Services.CreateScope())
     await db.Database.MigrateAsync();
 }
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project Service API v1"));
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project Service API v1");
+    c.SupportedSubmitMethods();
+});
 
 app.MapHealthChecks("/health");
 app.MapProjectsEndpoints();

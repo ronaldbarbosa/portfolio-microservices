@@ -49,8 +49,6 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       DB_CONNECTION_STRING: Host=postgres;Database=project_service;Username=postgres;Password=postgres
-    ports:
-      - "5148:8080"
     depends_on:
       postgres:
         condition: service_healthy
