@@ -4,10 +4,8 @@ services:
     runtime: docker
     plan: free
     region: oregon
-    buildCommand: docker build -t project-service .
-    startCommand: docker run -p 10000:8080 -e DB_CONNECTION_STRING=$DB_CONNECTION_STRING -e PORT=10000 project-service
     envVars:
-      - key: PORT
+      - key: ASPNETCORE_HTTP_PORTS
         value: "10000"
       - key: DB_CONNECTION_STRING
         fromDatabase:
