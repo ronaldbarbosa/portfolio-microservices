@@ -8,9 +8,4 @@ namespace Portfolio.Project.Data;
 public class ProjectServiceDbContext(DbContextOptions<ProjectServiceDbContext>  options) : DbContext(options)
 {
     public DbSet<Domain.Entities.Project> Projects { get; set; }
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.HasDefaultSchema("public");
-    }
 }

@@ -1,5 +1,39 @@
+# Build outputs
 bin/
 obj/
-/packages/
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+*.DotSettings.user
+_ReSharper.Caches/
 riderModule.iml
-/_ReSharper.Caches/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml
+coverage-reports/
+
+# Environment / secrets
+.env
+.env.local
+appsettings.local.json
+appsettings.*.local.json
+
+# OS
+.DS_Store
+Thumbs.db
