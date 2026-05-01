@@ -3,6 +3,16 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? [];
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("yarp"));
 
@@ -41,6 +51,8 @@ builder.Services
 var app = builder.Build();
 
 app.UseRouting();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
