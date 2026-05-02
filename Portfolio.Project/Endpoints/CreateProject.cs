@@ -9,10 +9,10 @@ public static class CreateProject
     public record Request(
         [property: Required] [property: MaxLength(100)]  string Name,
         [property: Required] [property: MaxLength(1000)] string Description,
-        [property: Required]                             string Frontend,
-        [property: Required]                             string Backend,
-        [property: Required]                             string Tools,
-        [property: Required] [property: Url]             string Url,
+                                                         string? Frontend,
+                                                         string? Backend,
+                                                         string? Tools,
+                             [property: Url]             string? Url,
         [property: Required] [property: Url]             string Code,
         [property: Required] [property: Url]             string Image,
         bool Finished);
@@ -23,10 +23,10 @@ public static class CreateProject
         {
             Name = request.Name,
             Description = request.Description,
-            Frontend = request.Frontend,
-            Backend = request.Backend,
-            Tools = request.Tools,
-            Url = request.Url,
+            Frontend = request.Frontend ?? string.Empty,
+            Backend = request.Backend ?? string.Empty,
+            Tools = request.Tools ?? string.Empty,
+            Url = request.Url ?? string.Empty,
             Code = request.Code,
             Image = request.Image,
             Finished = request.Finished

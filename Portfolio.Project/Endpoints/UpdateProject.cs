@@ -9,10 +9,10 @@ public static class UpdateProject
     public record Request(
         [property: Required] [property: MaxLength(100)]  string Name,
         [property: Required] [property: MaxLength(1000)] string Description,
-        [property: Required]                             string Frontend,
-        [property: Required]                             string Backend,
-        [property: Required]                             string Tools,
-        [property: Required] [property: Url]             string Url,
+                                                         string? Frontend,
+                                                         string? Backend,
+                                                         string? Tools,
+                             [property: Url]             string? Url,
         [property: Required] [property: Url]             string Code,
         [property: Required] [property: Url]             string Image,
         bool Finished);
@@ -26,10 +26,10 @@ public static class UpdateProject
 
         project.Name = request.Name;
         project.Description = request.Description;
-        project.Frontend = request.Frontend;
-        project.Backend = request.Backend;
-        project.Tools = request.Tools;
-        project.Url = request.Url;
+        project.Frontend = request.Frontend ?? string.Empty;
+        project.Backend = request.Backend ?? string.Empty;
+        project.Tools = request.Tools ?? string.Empty;
+        project.Url = request.Url ?? string.Empty;
         project.Code = request.Code;
         project.Image = request.Image;
         project.Finished = request.Finished;
