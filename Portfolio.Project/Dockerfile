@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Portfolio.Project/Portfolio.Project.csproj", "Portfolio.Project/"]
+COPY ["SharedContracts/SharedContracts.csproj", "SharedContracts/"]
 COPY ["SharedPagination/SharedPagination.csproj", "SharedPagination/"]
 RUN dotnet restore "Portfolio.Project/Portfolio.Project.csproj"
 COPY . .

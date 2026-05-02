@@ -1,4 +1,6 @@
+using MassTransit;
 using Microsoft.OpenApi;
+using Portfolio.ImageUploader.Consumers;
 using Portfolio.ImageUploader.Endpoints;
 using Portfolio.ImageUploader.Middleware;
 using Portfolio.ImageUploader.Services;
@@ -21,6 +23,20 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Image Uploader API",
         Version = "v1"
+    });
+});
+
+var rabbitMqConnectionString = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_STRING")
+    ?? builder.Configuration["RabbitMq:ConnectionString"];
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<ProjectDeletedConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(new Uri(rabbitMqConnectionString!));
+        cfg.ConfigureEndpoints(context);
     });
 });
 

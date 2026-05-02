@@ -15,6 +15,8 @@ services:
         sync: false
       - key: Cloudinary__ApiSecret
         sync: false
+      - key: RABBITMQ_CONNECTION_STRING
+        sync: false
 
   - type: web
     name: project-service
@@ -28,6 +30,8 @@ services:
         fromDatabase:
           name: project-db
           property: connectionString
+      - key: RABBITMQ_CONNECTION_STRING
+        sync: false
     databases:
       - name: project-db
         plan: free

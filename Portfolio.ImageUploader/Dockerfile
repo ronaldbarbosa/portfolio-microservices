@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Portfolio.ImageUploader/Portfolio.ImageUploader.csproj", "Portfolio.ImageUploader/"]
+COPY ["SharedContracts/SharedContracts.csproj", "SharedContracts/"]
 RUN dotnet restore "Portfolio.ImageUploader/Portfolio.ImageUploader.csproj"
 COPY . .
 WORKDIR "/src/Portfolio.ImageUploader"

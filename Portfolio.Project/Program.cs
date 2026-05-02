@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Portfolio.Project.Data;
@@ -40,6 +41,18 @@ builder.Services.AddDbContext<ProjectServiceDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+
+var rabbitMqConnectionString = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_STRING")
+    ?? builder.Configuration["RabbitMq:ConnectionString"];
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((_, cfg) =>
+    {
+        cfg.Host(new Uri(rabbitMqConnectionString!));
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHealthChecks();
 

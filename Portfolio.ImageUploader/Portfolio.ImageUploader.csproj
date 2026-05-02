@@ -10,8 +10,13 @@
 
     <ItemGroup>
         <PackageReference Include="CloudinaryDotNet" Version="1.29.0" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.3" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SharedContracts\SharedContracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

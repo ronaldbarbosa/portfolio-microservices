@@ -21,4 +21,19 @@ public class CloudinaryImageStorageService(IConfiguration config) : IImageStorag
         var result = await _cloudinary.UploadAsync(uploadParams, cancellationToken);
         return result.SecureUrl.ToString();
     }
+
+    public async Task DeleteAsync(string imageUrl, CancellationToken cancellationToken = default)
+    {
+        var publicId = ExtractPublicId(imageUrl);
+        await _cloudinary.DestroyAsync(new DeletionParams(publicId));
+    }
+
+    private static string ExtractPublicId(string imageUrl)
+    {
+        var path = new Uri(imageUrl).AbsolutePath;
+        var segments = path.Split('/');
+        var uploadIndex = Array.IndexOf(segments, "upload");
+        var publicIdWithExtension = string.Join("/", segments.Skip(uploadIndex + 2));
+        return Path.GetFileNameWithoutExtension(publicIdWithExtension);
+    }
 }
