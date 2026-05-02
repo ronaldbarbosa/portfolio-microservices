@@ -3,13 +3,21 @@ using CloudinaryDotNet.Actions;
 
 namespace Portfolio.ImageUploader.Services;
 
-public class CloudinaryImageStorageService(IConfiguration config) : IImageStorageService
+public class CloudinaryImageStorageService : IImageStorageService
 {
-    private readonly Cloudinary _cloudinary = new(new Account(
-        config["Cloudinary:CloudName"],
-        config["Cloudinary:ApiKey"],
-        config["Cloudinary:ApiSecret"]
-    ));
+    private readonly Cloudinary _cloudinary;
+
+    public CloudinaryImageStorageService(IConfiguration config)
+    {
+        var cloudName  = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME") ?? config["Cloudinary:CloudName"]
+            ?? throw new InvalidOperationException("CLOUDINARY_CLOUD_NAME is not configured");
+        var apiKey     = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY")    ?? config["Cloudinary:ApiKey"]
+            ?? throw new InvalidOperationException("CLOUDINARY_API_KEY is not configured");
+        var apiSecret  = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET") ?? config["Cloudinary:ApiSecret"]
+            ?? throw new InvalidOperationException("CLOUDINARY_API_SECRET is not configured");
+
+        _cloudinary = new Cloudinary(new Account(cloudName, apiKey, apiSecret));
+    }
 
     public async Task<string> UploadAsync(IFormFile file, CancellationToken cancellationToken = default)
     {

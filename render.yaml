@@ -9,11 +9,11 @@ services:
     envVars:
       - key: ASPNETCORE_HTTP_PORTS
         value: "10000"
-      - key: Cloudinary__CloudName
+      - key: CLOUDINARY_CLOUD_NAME
         sync: false
-      - key: Cloudinary__ApiKey
+      - key: CLOUDINARY_API_KEY
         sync: false
-      - key: Cloudinary__ApiSecret
+      - key: CLOUDINARY_API_SECRET
         sync: false
       - key: RABBITMQ_CONNECTION_STRING
         sync: false
