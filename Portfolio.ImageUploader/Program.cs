@@ -40,6 +40,12 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
+builder.Services.Configure<HostOptions>(options =>
+{
+    options.ServicesStartConcurrently = true;
+    options.ServicesStopConcurrently = true;
+});
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();

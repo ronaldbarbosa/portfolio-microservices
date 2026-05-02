@@ -53,6 +53,12 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
+builder.Services.Configure<HostOptions>(options =>
+{
+    options.ServicesStartConcurrently = true;
+    options.ServicesStopConcurrently = true;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHealthChecks();
 
