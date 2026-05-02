@@ -39,7 +39,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Image Uploader API v1");
-    
+    c.SupportedSubmitMethods();
 });
 
 app.MapHealthChecks("/health");
