@@ -33,15 +33,28 @@ public class CloudinaryImageStorageService : IImageStorageService
     public async Task DeleteAsync(string imageUrl, CancellationToken cancellationToken = default)
     {
         var publicId = ExtractPublicId(imageUrl);
-        await _cloudinary.DestroyAsync(new DeletionParams(publicId));
+        var result = await _cloudinary.DestroyAsync(new DeletionParams(publicId));
+        if (result.Result != "ok")
+            throw new InvalidOperationException($"Cloudinary returned '{result.Result}' when deleting '{publicId}'");
     }
 
     private static string ExtractPublicId(string imageUrl)
     {
-        var path = new Uri(imageUrl).AbsolutePath;
-        var segments = path.Split('/');
+        var segments = new Uri(imageUrl).AbsolutePath
+            .Split('/', StringSplitOptions.RemoveEmptyEntries);
         var uploadIndex = Array.IndexOf(segments, "upload");
-        var publicIdWithExtension = string.Join("/", segments.Skip(uploadIndex + 2));
-        return Path.GetFileNameWithoutExtension(publicIdWithExtension);
+        if (uploadIndex < 0)
+            throw new ArgumentException($"Not a valid Cloudinary URL: {imageUrl}");
+
+        var afterUpload = segments.Skip(uploadIndex + 1).ToArray();
+        // skip version segment (e.g. "v1312461204")
+        var start = afterUpload.Length > 0
+            && afterUpload[0].Length > 1
+            && afterUpload[0][0] == 'v'
+            && afterUpload[0][1..].All(char.IsDigit) ? 1 : 0;
+
+        var publicIdWithExtension = string.Join("/", afterUpload.Skip(start));
+        var lastDot = publicIdWithExtension.LastIndexOf('.');
+        return lastDot >= 0 ? publicIdWithExtension[..lastDot] : publicIdWithExtension;
     }
 }
