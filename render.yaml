@@ -7,6 +7,8 @@ services:
     dockerfilePath: ./Portfolio.ImageUploader/Dockerfile
     dockerContext: .
     envVars:
+      - key: ASPNETCORE_HTTP_PORTS
+        value: "10000"
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY
@@ -24,6 +26,8 @@ services:
     dockerfilePath: ./Portfolio.Project/Dockerfile
     dockerContext: .
     envVars:
+      - key: ASPNETCORE_HTTP_PORTS
+        value: "10000"
       - key: DB_CONNECTION_STRING
         fromDatabase:
           name: project-db
